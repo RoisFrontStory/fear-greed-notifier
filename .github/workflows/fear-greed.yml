@@ -2,7 +2,7 @@ name: Fear and Greed Notifier
 
 on:
   schedule:
-    - cron: '* 13,15 * * *'  
+    - cron: '* * * * *'  
   workflow_dispatch:        # Allows manual triggering
 
 jobs:
