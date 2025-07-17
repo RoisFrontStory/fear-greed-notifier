@@ -29,3 +29,4 @@ jobs:
           TWILIO_WHATSAPP_TO: ${{ secrets.TWILIO_WHATSAPP_TO }}
           API_URL: ${{ secrets.API_URL }}
         run: npm start
+
