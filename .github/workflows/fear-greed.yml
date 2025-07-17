@@ -2,7 +2,7 @@ name: Fear and Greed Notifier
 
 on:
   schedule:
-    - cron: '45 12,15 * * *'  # Runs at 06:00 and 15:00 UTC daily (adjust to your time zone)
+    - cron: '* 13,15 * * *'  # Runs at 06:00 and 15:00 UTC daily (adjust to your time zone)
   workflow_dispatch:        # Allows manual triggering
 
 jobs:
