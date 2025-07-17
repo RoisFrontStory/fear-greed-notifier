@@ -2,7 +2,7 @@ name: Fear and Greed Notifier
 
 on:
   schedule:
-    - cron: '* 13,15 * * *'  # Runs at 06:00 and 15:00 UTC daily (adjust to your time zone)
+    - cron: '* 13,15 * * *'  
   workflow_dispatch:        # Allows manual triggering
 
 jobs:
@@ -29,3 +29,6 @@ jobs:
           TWILIO_WHATSAPP_TO: ${{ secrets.TWILIO_WHATSAPP_TO }}
           API_URL: ${{ secrets.API_URL }}
         run: npm start
+
+      - name: Debug Time
+        run: date -u
