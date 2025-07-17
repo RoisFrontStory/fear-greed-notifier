@@ -1,0 +1,31 @@
+name: Fear and Greed Notifier
+
+on:
+  schedule:
+    - cron: '0 6,15 * * *'  # Runs at 06:00 and 15:00 UTC daily (adjust to your time zone)
+  workflow_dispatch:        # Allows manual triggering
+
+jobs:
+  send_whatsapp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run script
+        env:
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_WHATSAPP_FROM: ${{ secrets.TWILIO_WHATSAPP_FROM }}
+          TWILIO_WHATSAPP_TO: ${{ secrets.TWILIO_WHATSAPP_TO }}
+          API_URL: ${{ secrets.API_URL }}
+        run: npm start

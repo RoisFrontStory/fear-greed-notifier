@@ -1,6 +1,9 @@
+require('dotenv').config(); // Load variables from .env file
+
 const axios = require('axios');
 const twilio = require('twilio');
 
+// Destructure environment variables
 const {
   TWILIO_ACCOUNT_SID,
   TWILIO_AUTH_TOKEN,
@@ -9,15 +12,17 @@ const {
   API_URL
 } = process.env;
 
+// Twilio client setup
 const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
 async function run() {
   try {
     const { data: response } = await axios.get(API_URL);
+
     const title = response?.pageProps?.data?.pageTitle;
 
     if (!title) {
-      console.log("pageTitle not found.");
+      console.error("pageTitle not found in API response");
       return;
     }
 
@@ -37,11 +42,12 @@ async function run() {
         from: TWILIO_WHATSAPP_FROM,
         to: TWILIO_WHATSAPP_TO
       });
+
     } else {
-      console.log("Could not extract score or sentiment.");
+      console.error("Could not extract score or sentiment from title");
     }
-  } catch (err) {
-    console.error("Error:", err.message);
+  } catch (error) {
+    console.error("Failed to fetch or send message:", error.message);
   }
 }
 
