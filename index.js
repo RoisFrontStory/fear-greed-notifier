@@ -1,19 +1,13 @@
 require('dotenv').config(); // Load variables from .env file
 
 const axios = require('axios');
-const twilio = require('twilio');
 
 // Destructure environment variables
 const {
-  TWILIO_ACCOUNT_SID,
-  TWILIO_AUTH_TOKEN,
-  TWILIO_WHATSAPP_FROM,
-  TWILIO_WHATSAPP_TO,
+  CALLMEBOT_API_KEY,
+  CALLMEBOT_PHONE_NUMBER,
   API_URL
 } = process.env;
-
-// Twilio client setup
-const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
 async function run() {
   try {
@@ -38,15 +32,15 @@ async function run() {
       console.log("Sending WhatsApp message:", message);
 
       try {
-        const messageResponse = await client.messages.create({
-          body: message,
-          from: TWILIO_WHATSAPP_FROM,
-          to: TWILIO_WHATSAPP_TO
-        });
+        const callMeBotUrl = `https://api.callmebot.com/whatsapp.php?phone=${CALLMEBOT_PHONE_NUMBER}&text=${encodeURIComponent(message)}&apikey=${CALLMEBOT_API_KEY}`;
+        
+        const messageResponse = await axios.get(callMeBotUrl);
 
-        console.log("✅ Message sent successfully!");
-        console.log("Message SID:", messageResponse.sid);
-        console.log("Message status:", messageResponse.status);
+        if (messageResponse.data === "OK") {
+          console.log("✅ Message sent successfully!");
+        } else {
+          console.log("⚠️ Message response:", messageResponse.data);
+        }
       } catch (messageError) {
         console.error("❌ Failed to send WhatsApp message:", messageError.message);
         throw messageError; // Re-throw to be caught by outer catch block
