@@ -43,6 +43,7 @@ async function run() {
         }
       } catch (messageError) {
         console.error("❌ Failed to send WhatsApp message:", messageError.message);
+        console.error("url message:", callMeBotUrl);
         throw messageError; // Re-throw to be caught by outer catch block
       }
 
