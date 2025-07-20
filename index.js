@@ -37,11 +37,20 @@ async function run() {
 
       console.log("Sending WhatsApp message:", message);
 
-      await client.messages.create({
-        body: message,
-        from: TWILIO_WHATSAPP_FROM,
-        to: TWILIO_WHATSAPP_TO
-      });
+      try {
+        const messageResponse = await client.messages.create({
+          body: message,
+          from: TWILIO_WHATSAPP_FROM,
+          to: TWILIO_WHATSAPP_TO
+        });
+
+        console.log("✅ Message sent successfully!");
+        console.log("Message SID:", messageResponse.sid);
+        console.log("Message status:", messageResponse.status);
+      } catch (messageError) {
+        console.error("❌ Failed to send WhatsApp message:", messageError.message);
+        throw messageError; // Re-throw to be caught by outer catch block
+      }
 
     } else {
       console.error("Could not extract score or sentiment from title");
